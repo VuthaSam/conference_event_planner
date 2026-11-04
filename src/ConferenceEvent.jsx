@@ -9,6 +9,7 @@ const ConferenceEvent = () => {
     const [numberOfPeople, setNumberOfPeople] = useState(1);
     const venueItems = useSelector((state) => state.venue);
     const avItems = useSelector((state) => state.av);
+    const mealItems = useSelector((state) => state.meals);
     const dispatch = useDispatch();
     const remainingAuditoriumQuantity = 3 - venueItems.find(item => item.name === "Auditorium Hall (Capacity:200)").quantity;
     
@@ -56,11 +57,15 @@ const ConferenceEvent = () => {
           venueItems.forEach((item) => {
             totalCost += item.cost * item.quantity;
           });
+        } else if (section === "av") {
+          avItems.forEach((item) => {
+            totalCost += item.cost * item.quantity;
+          });
         }
         return totalCost;
       };
     const venueTotalCost = calculateTotalCost("venue");
-
+    const avTotalCost = calculateTotalCost("av");
     const navigateToProducts = (idType) => {
         if (idType == '#venue' || idType == '#addons' || idType == '#meals') {
           if (showItems) { // Check if showItems is false
@@ -176,7 +181,7 @@ const ConferenceEvent = () => {
                                   ))}
 
                                 </div>
-                                <div className="total_cost">Total Cost:</div>
+                              <div className="total_cost">Total Cost: ${avTotalCost.toFixed(2)}</div>
 
                             </div>
 
@@ -190,7 +195,23 @@ const ConferenceEvent = () => {
                                 </div>
 
                                 <div className="input-container venue_selection">
+                                  <label htmlFor="numberOfPeople"><h3>Number of People:</h3></label>
+                                  <input
+                                    type = "number"
+                                    className = "input_box5"
+                                    id = "numberOfPeople"
+                                    value = {numberOfPeople}
+                                    onChange = {(e) => {
+                                      const value = parseInt(e.target.value);
 
+                                      if (isNaN(value) || value < 1) {
+                                        setNumberOfPeople(1);
+                                      } else {
+                                        setNumberOfPeople(value);
+                                      }
+                                    }}
+                                      min = "1"
+                                    />
                                 </div>
                                 <div className="meal_selection">
 
