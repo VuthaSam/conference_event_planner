@@ -3,6 +3,7 @@ import './ConferenceEvent.css';
 import TotalCost from './TotalCost';
 import { useSelector, useDispatch } from 'react-redux';
 import { incrementQuantity, decrementQuantity } from './venueSlice';
+import { incrementAvQuantity, decrementAvQuantity } from './avSlice';
 import { toggleMealSelection } from './mealsSlice';
 
 const ConferenceEvent = () => {
@@ -77,27 +78,34 @@ const ConferenceEvent = () => {
         <div className="display_box1">
           <table className="table_item_data">
             <thead>
-              <tr>Name</tr>
-              <tr>Unit Cost</tr>
-              <tr>Quantity</tr>
-              <tr>Subtotal</tr>
+              <tr>
+                <td>Name</td>
+                <td>Unit Cost</td>
+                <td>Quantity</td>
+                <td>Subtotal</td>
+              </tr>
             </thead>
             <tbody>
               {items.map((item, index) => (
                 <tr key={index}>
                   <td>{item.name}</td>
                   <td>${item.cost}</td>
-                  <td>{item.quantity}</td>
+                  <td>
+                    {item.type === 'meals' || item.numberOfPeople
+                      ? ` For ${numberOfPeople} people`
+                      : item.quantity}
+                  </td>
                   <td>
                     $
-                    {item.type === 'meal' || item.numberOfPeople
-                      ? `For ${numberOfPeople}`
+                    {item.type === 'meals' || item.numberOfPeople
+                      ? `${numberOfPeople * item.cost}`
                       : `${item.quantity * item.cost}`}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          {items.length === 0 && <p>No items selected</p>}
         </div>
       </>
     );
@@ -303,7 +311,7 @@ const ConferenceEvent = () => {
                 />
               </div>
               <div className="meal_selection">
-                {mealsItems.map((item, index) => () => (
+                {mealsItems.map((item, index) => (
                   <div className="meal_item" key={index} style={{ padding: 15 }}>
                     <div className="inner">
                       <input
