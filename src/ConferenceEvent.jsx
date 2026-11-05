@@ -79,10 +79,10 @@ const ConferenceEvent = () => {
           <table className="table_item_data">
             <thead>
               <tr>
-                <td>Name</td>
-                <td>Unit Cost</td>
-                <td>Quantity</td>
-                <td>Subtotal</td>
+                <th>Name</th>
+                <th>Unit Cost</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
               </tr>
             </thead>
             <tbody>
